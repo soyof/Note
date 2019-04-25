@@ -187,7 +187,7 @@ hello world
 
   JSON.stringify(value[, replacer [, space]])
 
-  value   将要序列化成 一个JSON 字符串的值。
+  `value`   将要序列化成 一个JSON 字符串的值。
 
   `replacer` 可选
 

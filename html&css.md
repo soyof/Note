@@ -252,7 +252,7 @@ navigator. geolocation.watchPosition(successCallback, errorCallback)
 
   `window.onpopstate`是`popstate`事件在window对象上的事件处理程序.
 
-  `每当处于激活状态的历史记录条目发生变化时,popstate`事件就会在`对应window`对象上触发. 如果当前`处于激活状态的历史记录条目是由``history.pushState()`方法创建,或者由`history.replaceState()方法修改过`的, 则`popstate事件对象的``state`属性包含了这个历史记录条目的state对象的一个拷贝.
+  `每当处于激活状态的历史记录条目发生变化时,popstate`事件就会在`对应window`对象上触发. 如果当前`处于激活状态的历史记录条目是由 history.pushState()`方法创建,或者由`history.replaceState()方法修改过`的, 则`popstate事件对象的``state`属性包含了这个历史记录条目的state对象的一个拷贝.
 
   调用`history.pushState()`或者`history.replaceState()`不会触发popstate事件. `popstate`事件只会在浏览器某些行为下触发, 比如点击后退、前进按钮(或者在JavaScript中调用`history.back()、history.forward()、history.go()`方法).
 

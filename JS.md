@@ -8,7 +8,24 @@
 
 - js: 自由变量:函数没有声明该变量,但是却有使用该变量,那么对于这个函数来说,这个变量就是自由变量
 
-  ```javascript
+- form中的input可以设置为readonly和disable，请问2者有什么区别？
+
+  + readonly不可编辑，但可以选择和复制；值可以传递到后台
+  + disabled不能编辑，不能复制，不能选择；值不可以传递到后台
+  + disabled
+    - input无法接收焦点
+    - 使用tab键会跳过元素
+    - disabled不会对任何事件进行响应（比如：click事件无效）。
+    - disabled的元素的值不会提交。
+    - disabled属性可以用于所有的表单元素。
+  + readonly
+    + input可以接收焦点
+    + 使用tab键不会跳过元素
+    + readonly会对事件进行响应。
+    + readonly的元素的值会提交。
+    + readonly属性只对 type="text" 、 textarea 和 type="password" 有效。
+
+- ```javascript
   var a=10;
   function fn(){
       console.log(a); //对于fn来说,变量a是自由变量
@@ -38,6 +55,43 @@
   ```
 
   
+
+- try...catch...finally
+
+  - 不管有没有出现异常，finally块中代码都会执行；
+
+  - 当try和catch中有return时，finally仍然会执行；
+
+  - finally是在return后面的表达式运算后执行的（此时并没有返回运算后的值，而是先把要返回的值保存起来，不管finally中的代码怎么样，返回的值都不会改变，任然是之前保存的值），所以函数返回值是在finally执行前确定的；
+
+  - finally中最好不要包含return，否则程序会提前退出，返回值不是try或catch中保存的返回值。
+
+    - 情况1：try{} catch(){}finally{} return;
+                  显然程序按顺序执行。
+    - *情况2*:try{ return; }catch(){} finally{} return;
+                程序执行try块中return之前（包括return语句中的表达式运算）代码；
+               再执行finally块，最后执行try中return;
+               finally块之后的语句return，因为程序在try中已经return所以不再执行。
+    - *情况3*:try{ } catch(){return;} finally{} return;
+               程序先执行try，如果遇到异常执行catch块，
+               有异常：则执行catch中return之前（包括return语句中的表达式运算）代码，再执行finally语句中全部代码，
+                           最后执行catch块中return. finally之后也就是4处的代码不再执行。
+               无异常：执行完try再finally再return.
+    - *情况4*:try{ return; }catch(){} finally{return;}
+                程序执行try块中return之前（包括return语句中的表达式运算）代码；
+                再执行finally块，因为finally块中有return所以提前退出。
+    - *情况5*:try{} catch(){return;}finally{return;}
+                程序执行catch块中return之前（包括return语句中的表达式运算）代码；
+                再执行finally块，因为finally块中有return所以提前退出。
+    - *情况6*:try{ return;}catch(){return;} finally{return;}
+                程序执行try块中return之前（包括return语句中的表达式运算）代码；
+                有异常：执行catch块中return之前（包括return语句中的表达式运算）代码；
+                             则再执行finally块，因为finally块中有return所以提前退出。
+                无异常：则再执行finally块，因为finally块中有return所以提前退出。
+
+    **最终结论**：任何执行try 或者catch中的return语句之前，都会先执行finally语句，如果finally存在的话。
+                      如果finally中有return语句，那么程序就return了，所以finally中的return是一定会被return的，
+                      编译器把finally中的return实现为一个warning。  
 
 ## String
 
@@ -81,7 +135,7 @@
 
   - 如果某个字符串不够指定长度，会在头部或尾部补全。`padStart()`用于头部补全，`padEnd()`用于尾部补全。
 
-  - `padStart()`和`padStart()`一共接受两个参数，第一个参数用来指定字符串的最小长度，第二个参数是用来补全的字符串。
+  - `padStart()`和`padEnd()`一共接受两个参数，第一个参数用来指定字符串的最小长度，第二个参数是用来补全的字符串。
 
   - 如果原字符串的长度，等于或大于指定的最小长度，则返回原字符串。
 
@@ -357,6 +411,7 @@ result = null;//当函数fn没有被变量引用了，那么函数fn就会被回
 - 字面量是代码中表述数据的手段
 - input中属性accept 属性只能与  <input type="file"> 配合使用。它规定能够通过文件上传进行提交的文件类型    
   在文件上传中使用 accept  属性，本例中的输入字段可以接受 GIF 和 JPEG 两种图像：
+
   ```
   <form>
     <input type="file" name="pic" id="pic" accept="image/gif, image/jpeg" />
@@ -772,7 +827,7 @@ function addEventListener(element,type,fn){
 - clientY:可视区域的纵坐标
 
 > window.innerWidth  获取浏览器可视区宽度
-> window.innereHeight 获取浏览器可视区高度
+> window.innerHeight 获取浏览器可视区高度
 > window.onresize  事件,当窗口改变时,事件被触发
 
 ### innerText与innerHTML区别
