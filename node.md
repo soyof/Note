@@ -931,3 +931,16 @@ Node文件操作的路径被设计为相对于执行node命令所处的路径---
 
 - 服务端的重定向只针对同步请求才有效
 - 服务端的重定向针对异步请求无效,页面不会跳转
+
+
+
+# nvm使用
+
+nvm install ## 安装指定版本，可模糊安装，如：安装v6.2.0，既可nvm install v6.2.0，又可nvm install 6.2
+nvm uninstall ## 删除已安装的指定版本，语法与install类似
+nvm use ## 切换使用指定的版本node
+nvm ls ## 列出所有安装的版本
+nvm ls-remote ## 列出所有远程服务器的版本（官方node version list）
+nvm current ## 显示当前的版本
+nvm alias ## 给不同的版本号添加别名
+nvm unalias ## 删除已定义的别名

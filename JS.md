@@ -1,5 +1,17 @@
 # JS
 
+var data = {a: 10}
+注意：为什么要 eval这里要添加 “(“(“+data+”)”);//”呢？
+
+原因在于：eval本身的问题。 由于json是以”{}”的方式来开始以及结束的，在JS中，它会被当成一个语句块来处理，所以必须强制性的将它转换成一种表达式。 
+加上圆括号的目的是迫使eval函数在处理JavaScript代码的时候强制将括号内的表达式（expression）转化为对象，而不是作为语句（statement）来执行。举一个例子，例如对象字面量{}，如若不加外层的括号，那么eval会将大括号识别为JavaScript代码块的开始和结束标记，那么{}将会被认为是执行了一句空语句。所以下面两个执行结果是不同的：
+
+```js
+alert(eval(“{}”); // return undefined
+
+alert(eval(“({})”);// return object[Object]
+```
+
 - console.time("abc");  //开始秒表---传参表示是同一个秒表
 
 - console.timeEnd("abc");  //结束秒表
@@ -269,7 +281,333 @@ Array数组方法
 
 
 
+## Object
 
+- `Object.assign() `  将所有可枚举属性的值从一个或多个源对象复制到目标对象。它将返回目标对象。
+
+  ```js
+  Object.assign(target, ...sources)
+  target: 目标对象
+  sources: 源对象
+  Object.assign 不会在那些source对象值为 null 或 undefined 的时候抛出错误
+  继承属性和不可枚举属性不能拷贝
+  原始类型会被包装成对象
+  异常会打断后续拷贝任务
+  ```
+
+- `Object.create()`  方法创建一个新对象，使用现有的对象来提供新创建的对象的`__proto__`  返回值: 新对象
+
+  ```javascript
+  Object.create(proto[, propertiesObject])
+  proto
+  新创建对象的原型对象。
+  propertiesObject
+  可选。如果没有指定为 undefined，则是要添加到新创建对象的可枚举属性（即其自身定义的属性，而不是其原型链上的枚举属性）对象的属性描述符以及相应的属性名称。这些属性对应Object.defineProperties()的第二个参数。
+  
+  如果propertiesObject参数是 null 或非原始包装对象，则抛出一个 TypeError 异常
+  
+  ```
+
+- `Object.defineProperties()`  直接在一个对象上定义新的属性或修改现有属性,并返回该对象
+
+  ```javascript
+  Object.defineProperties(obj, props)
+  
+  obj
+  在其上定义或修改属性的对象。
+  props
+  要定义其可枚举属性或修改的属性描述符的对象。对象中存在的属性描述符主要有两种：数据描述符和访问器描述符。描述符具有以下键：
+      1.configurable
+          true 当且仅当该属性描述符的类型可以被改变并且该属性可以从对应对象中删除。
+          默认为 false
+      2.enumerable
+          true 当且仅当在枚举相应对象上的属性时该属性显现。
+          默认为 false
+  	3.value
+          与属性关联的值。可以是任何有效的JavaScript值（数字，对象，函数等）。
+          默认为 undefined.
+      4.writable
+          true当且仅当与该属性相关联的值可以用assignment operator改变时。
+          默认为 false
+      5.get
+          作为该属性的 getter 函数，如果没有 getter 则为undefined。函数返回值将被用作属性的值。
+          默认为 undefined
+      6.set
+          作为属性的 setter 函数，如果没有 setter 则为undefined。函数将仅接受参数赋值给该属性的新值。
+          默认为 undefined
+  ```
+
+- `Object.defineProperty()` 方法会直接在一个对象上定义一个新属性，或者修改一个对象的现有属性， 并返回这个对象。
+
+  ```javascript
+  Object.defineProperty(obj, prop, descriptor)
+  obj
+  	要在其上定义属性的对象。
+  prop
+  	要定义或修改的属性的名称。
+  descriptor
+  	将被定义或修改的属性描述符。
+  ```
+
+- `Object.entries()`方法返回一个给定对象自身可枚举属性的键值对数组，其排列与使用 `for...in`循环遍历该对象时返回的顺序一致（区别在于 for-in 循环也枚举原型链中的属性）。
+
+  ```
+  Object.entries(obj)
+  
+  obj
+  可以返回其可枚举属性的键值对的对象。
+  返回值
+  给定对象自身可枚举属性的键值对数组。
+  ```
+
+- `Object.freeze()` 方法可以**冻结**一个对象。一个被冻结的对象再也不能被修改；冻结了一个对象则不能向这个对象添加新的属性，不能删除已有属性，不能修改该对象已有属性的可枚举性、可配置性、可写性，以及不能修改已有属性的值。此外，冻结一个对象后该对象的原型也不能被修改。`freeze()` 返回和传入的参数相同的对象。
+
+  ```
+  Object.freeze(obj)
+  
+  obj
+  要被冻结的对象。
+  返回值
+  被冻结的对象
+  ```
+
+- `Object.fromEntries()` 方法把键值对列表转换为一个对象。
+
+  ```
+  Object.fromEntries(iterable)
+  
+  iterable
+  可迭代对象，类似 Array 、 Map 或者其它实现了可迭代协议的对象
+  返回值
+  一个由该迭代对象条目提供对应属性的新对象
+  ```
+
+- `Object.getOwnPropertyDescriptor()`  方法返回指定对象上一个自有属性对应的属性描述符。（自有属性指的是直接赋予该对象的属性，不需要从原型链上进行查找的属性）
+
+  ```
+  Object.getOwnPropertyDescriptor(obj, prop)
+  
+  obj
+  需要查找的目标对象
+  prop
+  目标对象内属性名称
+  返回值
+  如果指定的属性存在于对象上，则返回其属性描述符对象（property descriptor），否则返回 undefined
+  ```
+
+- `Object.getOwnPropertyNames()`方法返回一个由指定对象的所有自身属性的属性名（包括不可枚举属性但不包括Symbol值作为名称的属性）组成的数组。
+
+  ```
+  Object.getOwnPropertyNames(obj)
+  
+  obj
+  一个对象，其自身的可枚举和不可枚举属性的名称被返回
+  返回值
+  在给定对象上找到的自身属性对应的字符串数组
+  ```
+
+- `Object.getOwnPropertySymbols()` 方法返回一个给定对象自身的所有 Symbol 属性的数组
+
+  ```
+  Object.getOwnPropertySymbols(obj)
+  
+  obj
+  要返回 Symbol 属性的对象
+  ```
+
+- `Object.getPrototypeOf()` 方法返回指定对象的原型
+
+  ```
+  Object.getPrototypeOf(object)
+  
+  obj
+  要返回其原型的对象
+  返回值
+  给定对象的原型。如果没有继承属性，则返回 null
+  ```
+
+- `Object.is()` 方法判断两个值是否是相同的值
+
+  ```
+  Object.is(value1, value2)
+  
+  value1
+  第一个需要比较的值
+  value2
+  第二个需要比较的值
+  返回值
+  Boolean
+  
+  Object.is() 判断两个值是否相同。如果下列任何一项成立，则两个值相同：
+      两个值都是 undefined
+      两个值都是 null
+      两个值都是 true 或者都是 false
+      两个值是由相同个数的字符按照相同的顺序组成的字符串
+      两个值指向同一个对象
+      两个值都是数字并且
+      都是正零 +0
+      都是负零 -0
+      都是 NaN
+      都是除零和 NaN 外的其它同一个数字
+  === 运算符（和== 运算符）将数字值 -0 和 +0 视为相等，并认为 Number.NaN 不等于 NaN
+  object.is()不做隐式转换
+  ```
+
+- `Object.isExtensible()` 方法判断一个对象是否是可扩展的（是否可以在它上面添加新的属性）
+
+  ```
+  Object.isExtensible(obj)
+  
+  obj
+  需要检测的对象
+  返回值
+  Boolean  密封对象是不可扩展的   冻结对象也是不可扩展
+  ```
+
+- `Object.isFrozen()`方法判断一个对象是否被冻结
+
+  ```
+  Object.isFrozen(obj)
+  
+  一个不可扩展的空对象同时也是一个冻结对象
+  一个不可扩展的对象,拥有一个不可写但可配置的属性,则它仍然是非冻结的
+  一个不可扩展的对象,拥有一个不可配置但可写的属性,则它仍然是非冻结的
+  一个不可扩展的对象,值拥有一个访问器属性,则它仍然是非冻结的
+  一个冻结对象也是一个密封对象,更是一个不可扩展的对象
+  ```
+
+- `Object.isSealed()` 方法判断一个对象是否被密封
+
+  ```
+  Object.isSealed(obj)
+  
+  把一个空对象变的不可扩展,则它同时也会变成个密封对象
+  如果这个对象不是空对象,则它不会变成密封对象,因为密封对象的所有自身属性必须是不可配置的
+  ```
+
+- `Object.keys()` 方法会返回一个由一个给定对象的自身可枚举属性组成的数组，数组中属性名的排列顺序和使用 `for...in` 循环遍历该对象时返回的顺序一致 。如果对象的键-值都不可枚举，那么将返回由键组成的数组
+
+  ```
+  Object.keys(obj)
+  
+  obj
+  要返回其枚举自身属性的对象
+  返回值
+  一个表示给定对象的所有可枚举属性的字符串数组
+  ```
+
+- `Object.preventExtensions()`方法让一个对象变的不可扩展，也就是永远不能再添加新的属性
+
+  ```
+  Object.preventExtensions(obj)
+  
+  obj
+  将要变得不可扩展的对象
+  返回值
+  已经不可扩展的对象
+  ```
+
+- `hasOwnProperty()` 方法会返回一个布尔值，指示对象**自身**属性中是否具有指定的属性（也就是是否有指定的键）
+
+  ```
+  obj.hasOwnProperty(prop)
+  
+  prop
+  要检测的属性  字符串 名称或者 Symbol
+  返回值
+  Boolean
+  所有继承了 Object 的对象都会继承到 hasOwnProperty 方法。这个方法可以用来检测一个对象是否含有特定的自身属性；和 in 运算符不同，该方法会忽略掉那些从原型链上继承到的属性
+  ```
+
+- `isPrototypeOf()` 方法用于测试一个对象是否存在于另一个对象的原型链上
+
+  > ​	`isPrototypeOf()` 与 `instanceof` 运算符不同。在表达式 "`object instanceof AFunction`"中，`object` 的原型链是针对 `AFunction.prototype` 进行检查的，而不是针对 `AFunction` 本身
+
+  ```
+  prototypeObj.isPrototypeOf(object)
+  
+  object
+  在该对象的原型链上搜寻
+  返回值
+  Boolean
+  ```
+
+- `propertyIsEnumerable()` 方法返回一个布尔值，表示指定的属性是否可枚举
+
+  ```
+  obj.propertyIsEnumerable(prop)
+  
+  prop
+  需要测试的属性名
+  
+  每个对象都有一个propertyIsEnumerable方法。此方法可以确定对象中指定的属性是否可以被for...in循环枚举，但是通过原型链继承的属性除外。如果对象没有指定的属性，则此方法返回false
+  ```
+
+- `toLocaleString()` 方法返回一个该对象的字符串表示。此方法被用于派生对象为了特定语言环境的目的（locale-specific purposes）而重载使用
+
+  ```
+  obj.toLocaleString()
+  
+  Object toLocaleString 返回调用 toString() 的结果。
+  该函数提供给对象一个通用的toLocaleString 方法，不是全部都可以使用它。
+  
+  Array：Array.prototype.toLocaleString()
+  Number：Number.prototype.toLocaleString()
+  Date：Date.prototype.toLocaleString()
+  ```
+
+- `toString()` 方法返回一个表示该对象的字符串
+
+  ```
+  object.toString()
+  
+  每个对象都有一个toString()方法，当该对象被表示为一个文本值时，或者一个对象以预期的字符串方式引用时自动调用。默认情况下，toString()方法被每个Object对象继承。如果此方法在自定义对象中未被覆盖，toString() 返回 "[object type]"，其中type是对象的类型
+  
+  toString()调用 null返回[object Null]，undefined 返回[object Undefined]
+  ```
+
+- `valueOf()` 方法返回指定对象的原始值
+
+  ```html
+  object.valueOf()
+  
+  不同类型对象的valueOf()方法的返回值
+  Array	返回数组对象本身。
+  Boolean	布尔值。
+  Date	存储的时间是从 1970 年 1 月 1 日午夜开始计的毫秒数 UTC。
+  Function	函数本身。
+  Number	数字值。
+  Object	对象本身。这是默认情况。
+  String	字符串值。
+  Math 和 Error 对象没有 valueOf 方法。
+  ```
+
+- `Object.seal()`方法封闭一个对象，阻止添加新属性并将所有现有属性标记为不可配置。当前属性的值只要可写就可以改变
+
+  ```
+  Object.seal(obj)
+  
+  通常，一个对象是可扩展的（可以添加新的属性）。密封一个对象会让这个对象变的不能添加新属性，且所有已有属性会变的不可配置。属性不可配置的效果就是属性变的不可删除，以及一个数据属性不能被重新定义成为访问器属性，或者反之。但属性的值仍然可以修改。尝试删除一个密封对象的属性或者将某个密封对象的属性从数据属性转换成访问器属性，结果会静默失败或抛出TypeError
+  ```
+
+- `Object.setPrototypeOf()` 方法设置一个指定的对象的原型 ( 即, 内部[[Prototype]]属性）到另一个对象或  `null`
+
+  ```
+  Object.setPrototypeOf(obj, prototype)
+  
+  obj
+  要设置其原型的对象。.
+  prototype
+  该对象的新原型(一个对象 或 null).
+  ```
+
+- `Object.values()`方法返回一个给定对象自身的所有可枚举属性值的数组，值的顺序与使用`for...in`循环的顺序相同 ( 区别在于 for-in 循环枚举原型链中的属性 )
+
+  ```
+  Object.values(obj)
+  
+  Object.values()返回一个数组，其元素是在对象上找到的可枚举属性值。属性的顺序与通过手动循环对象的属性值所给出的顺序相同
+  ```
 
 
 
