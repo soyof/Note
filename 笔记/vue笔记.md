@@ -334,3 +334,169 @@ TortoiseGit使用扩展名为ppk的密钥，而不是ssh-keygen生成的rsa密�
 因为Git与TortoiseGit默认使用的私钥格式不一样，所以我们需要给Git和TortoiseGit个配置一份公钥私钥，但是这样会显得很麻烦，那么我们如何让Git与TortoiseGit使用同一SSH密钥呢？
 
 https://blog.csdn.net/qq_32786873/article/details/81480414
+
+
+
+## Vue 不能检测到数组的变动解决办法
+
+由于 JavaScript 的限制，Vue 不能检测到以下数组的变动：
+
+- 当利用索引直接设置一个数组项时，例如：`vm.items[indexOfItem] = newValue`
+- 当修改数组的长度时，例如：`vm.items.length = newLength`
+
+为了解决第一个问题，Vue 提供了以下操作方法：
+
+```cpp
+// Vue.set
+Vue.set(vm.items, indexOfItem, newValue)
+// vm.$set，Vue.set的一个别名
+vm.$set(vm.items, indexOfItem, newValue)
+// Array.prototype.splice
+vm.items.splice(indexOfItem, 1, newValue)
+```
+
+为了解决第二个问题，Vue 提供了以下操作方法：
+
+```cpp
+// Array.prototype.splice
+vm.items.splice(newLength)
+```
+
+## 父组件可以监听到子组件的生命周期吗？
+
+比如有父组件 Parent 和子组件 Child，如果父组件监听到子组件挂载 mounted 就做一些逻辑处理，可以通过以下写法实现：
+
+```java
+// Parent.vue
+<Child @mounted="doSomething"/>
+
+// Child.vue
+mounted() {
+  this.$emit("mounted");
+}
+```
+
+以上需要手动通过 $emit 触发父组件的事件，更简单的方式可以在父组件引用子组件时通过 @hook 来监听即可，如下所示：
+
+```jsx
+//  Parent.vue
+<Child @hook:mounted="doSomething" ></Child>
+
+doSomething() {
+   console.log('父组件监听到 mounted 钩子函数 ...');
+},
+
+//  Child.vue
+mounted(){
+   console.log('子组件触发 mounted 钩子函数 ...');
+},    
+
+// 以上输出顺序为：
+// 子组件触发 mounted 钩子函数 ...
+// 父组件监听到 mounted 钩子函数 ...     
+```
+
+当然 @hook 方法不仅仅是可以监听 mounted，其它的生命周期事件，例如：created，updated 等都可以监听。
+
+
+
+“懒加载也叫延迟加载，即在需要的时候进行加载，随用随载。在单页应用中，如果没有应用懒加载，运用webpack打包后的文件将会异常的大，造成进入首页时，需要加载的内容过多，延时过长，不利于用户体验，而运用懒加载则可以将页面进行划分，需要的时候加载页面，可以有效的分担首页所承担的加载压力，减少首页加载用时。”
+
+### 1、vue路由的懒加载
+
+- 按需加载的写法
+
+```
+require(["src/xx/xxx/xx.vue"], resolve);
+```
+
+![clipboard.png](https://segmentfault.com/img/bVV6vV?w=790&h=515)
+
+- 效果
+
+![clipboard.png](https://segmentfault.com/img/bVV6yA?w=741&h=277)
+
+按需加载会在页面第一次请求的时候，把相关路由组件块的js添加上；非按需加载则会把所有的路由组件块的js包打在一起。当业务包很大的时候建议用路由的按需加载（懒加载）。
+
+### 2、vue组件的异步加载和同步加载
+
+- 组件的写法
+
+```
+       // aview: function(resolve) {
+       //     require(["./a.vue"], resolve);
+       // },
+       // bview: function(resolve) {
+       //     require(["./b.vue"], resolve);
+       // }
+       aview:require("./a.vue"),
+       bview:require("./b.vue"),
+```
+
+![clipboard.png](https://segmentfault.com/img/bVV6z2?w=762&h=254)
+
+- 效果
+  异步组件页面渲染的时候会跳动；但是同步书写不会
+
+### 3、vue组件的按需加载（2种方式）
+
+#### 1、动态组件方式
+
+- 书写方式
+
+```
+组件里面：
+ components: {
+        aview: function(resolve) {
+            require(["./a.vue"], resolve);
+        },
+        bview: function(resolve) {
+            require(["./b.vue"], resolve);
+        }
+    },
+ 模板里面：
+<component :is="current" :data="myData" ></component>
+ data: function() {
+        return {
+            current: "",
+            myData:"",
+            show:false
+        }
+    },
+    methods: {
+        changeComponents:function(view)
+        {
+            if(view=='aview')
+            {
+                this.myData='a1000';
+            }
+            else
+            {
+                this.myData='b1000';
+            }
+            this.current=view;
+        }
+    }
+```
+
+*效果（会触发组件的生命周期）
+
+![clipboard.png](https://segmentfault.com/img/bVV6Bj?w=579&h=194)
+
+#### 2、v-if方式(强制创建和结束生命周期)
+
+- 书写方式
+
+```
+模板：
+<aview v-if="show"></aview>
+组件：
+components: {
+        aview:require("./a.vue")
+    },
+```
+
+- 效果
+
+![clipboard.png](https://segmentfault.com/img/bVV6Cm?w=470&h=164)
+
