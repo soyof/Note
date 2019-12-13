@@ -49,13 +49,17 @@ this.$refs.popover.showPopover = false
 
 
 
-### el-tree
+### el-tree(异步树)
 
 > 异步树加载,初始值通过ajax获取,实现拖拽必须设定data属性,
 >
 > 拖拽完成后更新当前节点下的所有子元素
 >
 > 因初始设置了data属性,因此每次拖拽都会导致data中增加当前拖拽元素的信息,导致再次拖拽将重复渲染上次拖拽元素,因此,拖拽结束后需将当前拖拽元素从data中移除
+
+> 若异步树el-tree中设置了:data = 'data',  则添加数据的时候,应将添加成功后的子类从data中移除,否则再次渲染会造成还存在data中的数据渲染,从而出现相同数据被多次渲染
+
+
 
 ```javascript
 loadTree(node, resolve) {
@@ -74,6 +78,60 @@ loadTree(node, resolve) {
     })
 }
 
+拖拽完成后执行请求:
+handleCompleteDrop(dragNode, dropNode, type) {
+    // 确定参数,发送请求
+    params = {
+        type: type,
+        srcNode: {},
+        tarNode: {}
+    }
+    this.axios.post('xxxx')
+        .then(res => {
+        	const currentNode =  this.$refs.tree.getNode(dragNode.data)
+            if (type === 'inner') {
+                currentNode.data.nodePid = params.tarNode.nodeId
+                dropNode.isLeaf = true
+                dropNode.parent.loaded = false
+                dropNode.expand()
+            } else {
+                currentNode.parent.data.nodeId = params.tarNode.nodePid
+                currentNode.parent.loaded = false
+                currentNode.parent.expand()
+                if (currentNode.parent.data.nodePid === 0) {
+                    this.splitData(dragNode.data.nodeId)
+                }
+            }
+    	})
+    	.catch(res => {  // 处理同名问题
+        	const draggingNode = this.$refs.tree.getNode(dragNode.data.nodePid) || 					this.$refs.tree.root  // 获取dragNode的父node,当父node为null时获取根节点node
+             // 获取dropNode的父node,当type为inner时, 获取自己的node,当父node为null时获取根节点node
+            const droppingNode = type === 'inner' ? 					                			this.$refs.tree.getNode(dropNode.data.NodeId) :               				 			 this.$refs.tree.getNode(dropNode.data.nodePid) || this.$refs.tree.root
+            draggingNode.loaded = false // 更新节点
+        	draggingNode.expand()
+        	droppingNode.loaded = false  // 更新节点
+        	droppingNode.expand()
+        	this.splitData(dragNode.data.nodeId) // 当nodePid为0时,删除data中增加的数据
+    	})
+}
+
+// 添加数据  this.treeData为点击当前元素的Node
+this.$refs.tree.append(obj, this.treeData.node)
+this.treeData.node.parent.loaded = false
+this.treeData.expand()
+
+// 移除节点操作
+this.$refs.tree.remove(obj)
+
+function splitData(id) {
+    const index = this.data.findIndex(item => {
+        return item.id === id
+    })
+    this.data.splice(index, 1)
+}
+
+
+
 拖拽元素的node获取 currentNode =  this.$refs.tree.getNode(dragNode.data)
 // 当type === 'inner'
 dragNode.data.nodePid = params.target.id
@@ -91,12 +149,5 @@ if(currentNode.parent.key === 0) {
     this.data.splice(index, 1)
 }
 
-// 树状异步加载添加数据  this.treeData为点击当前元素的Node
-this.$refs.tree.append(obj, this.treeData.node)
-this.treeData.node.parent.loaded = false
-this.treeData.expand()
-
-// 移除
-this.$refs.tree.remove(obj)
 ```
 
