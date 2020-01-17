@@ -387,3 +387,30 @@ iframe.onload = function() {
 
 
 
+#### 圆周运动实现
+
+```css
+<div class="class_ball"></div>
+.class_ball{
+    width:8px;
+    height:8px;
+    background:#000;
+    border-radius:4px;
+    box-shadow:0 0 7px #222;
+    left:200px;
+    top:200px;
+    position:absolute;
+    animation:action 2s linear infinite;
+}
+@keyframes action {
+    from {
+    	transform: rotate(0deg) translate(58px) rotate(0deg);
+    }
+    to {
+    	transform: rotate(360deg) translate(58px) rotate(-360deg);
+    }
+}
+```
+
+
+
