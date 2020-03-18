@@ -50,11 +50,18 @@
         "wxml": "html"
     },
     "workbench.colorTheme": "Monokai",
-    "eslint.alwaysShowStatus": true,
+    // eslint 代码自动检查相关配置
+    "eslint.enable": true,
     "eslint.autoFixOnSave": true,
+    "eslint.run": "onType",
+    "eslint.options": {
+	    "extensions": [".js",".vue"]
+    },
+    "eslint.alwaysShowStatus": true,
     "eslint.validate": [
         "javascript",
         "javascriptreact",
+        "vue",
         "html",
         {
             "language": "html",
@@ -81,16 +88,51 @@
         "styl"
     ],
     "workbench.iconTheme": "vscode-icons",
-    "[javascript]": {
-        "editor.defaultFormatter": "HookyQR.beautify"
-    },
-    
     // "vetur.format.defaultFormatter.js": "prettier-eslint",
     "prettier.jsxBracketSameLine": true,
     "vetur.format.defaultFormatter.html": "js-beautify-html",
     "javascript.format.insertSpaceAfterSemicolonInForStatements": false,
     "typescript.format.insertSpaceAfterSemicolonInForStatements": false,
     "vetur.format.defaultFormatter.js": "vscode-typescript",
+    "vetur.format.defaultFormatterOptions": {
+        "js-beautify-html": {
+            "wrap_attributes": "force-expand-multiline"
+        },
+        "prettyhtml": {
+            "printWidth": 50,
+            "singleQuote": false,
+            "wrapAttributes": false,
+            "sortAttributes": false
+        },
+        "prettier": {
+            "singleQuote": true,
+            "semi": false
+        }
+    },
+    "sync.gist": "2c6dd8677ca85f792a4131172ef5dadd",
+    "editor.codeActionsOnSave": {
+        "source.fixAll.eslint": true
+    },
+    "editor.suggestSelection": "first",
+    "vsintellicode.modify.editor.suggestSelection": "automaticallyOverrodeDefaultValue",
+    "npm.runSilent": true,
+    "files.insertFinalNewline": true,
+    "workbench.enableExperiments": false,
+    // 文件格式化插件
+    "[json]": {
+        "editor.defaultFormatter": "esbenp.prettier-vscode"
+    },
+    "[html]": {
+        "editor.defaultFormatter": "esbenp.prettier-vscode"
+    },
+    "[javascript]": {
+        "editor.defaultFormatter": "esbenp.prettier-vscode"
+    },
+    "[css]": {
+        "editor.defaultFormatter": "esbenp.prettier-vscode"
+    }
+}
+
     // 不校验wepy的template模版----不检验vetur中的template
     // "vetur.validation.template": false
     // #========================== VUE项目环境  =====================================
@@ -107,30 +149,3 @@
     // "javascript.format.insertSpaceBeforeFunctionParenthesis": true,
     // "editor.formatOnType": true //#让函数(名)和后面的括号之间加个空格
     // #==============================================================================
-    "vetur.format.defaultFormatterOptions": {
-        "js-beautify-html": {
-            "wrap_attributes": "force-expand-multiline"
-        },
-        "prettyhtml": {
-            "printWidth": 50,
-            "singleQuote": false,
-            "wrapAttributes": false,
-            "sortAttributes": false
-        },
-        "prettier": {
-            "singleQuote": true,
-            "semi": false
-        }
-    },
-    "sync.gist": "5554b1ef5de83d7cf94ae036648968d5",
-    "editor.codeActionsOnSave": {
-        "source.fixAll.eslint": true
-    },
-    "[css]": {
-        "editor.defaultFormatter": "HookyQR.beautify"
-    },
-    "editor.suggestSelection": "first",
-    "vsintellicode.modify.editor.suggestSelection": "automaticallyOverrodeDefaultValue",
-    "npm.runSilent": true,
-    "files.insertFinalNewline": true
-}
