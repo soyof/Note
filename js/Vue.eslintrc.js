@@ -19,6 +19,7 @@ module.exports = {
   */
   rules: {
     'accessor-pairs': 2,
+	'arrow-parens': 0,
     'arrow-spacing': [
       2, {
         'before': true,
@@ -197,6 +198,7 @@ module.exports = {
     'no-useless-escape': 0,
     'no-whitespace-before-property': 2,
     'no-with': 2,
+	"no-var": 2,
     'one-var': [ // 声明
       2, {
         'initialized': 'never'
@@ -287,7 +289,7 @@ module.exports = {
       'attribute': 1,
       'baseIndent': 1,
       'closeBracket': 0,
-      'alignAttributesVertically': true,
+      'alignAttributesVertically': false,
       'ignores': []
     }],
     'vue/html-quotes': ['error', 'double'],
