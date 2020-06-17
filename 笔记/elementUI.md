@@ -4,6 +4,7 @@
 
 ```javascript
 this.$refs.popover.showPopover = false
+showPopper
 ```
 
 

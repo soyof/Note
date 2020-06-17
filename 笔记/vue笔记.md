@@ -500,3 +500,23 @@ components: {
 
 ![clipboard.png](https://segmentfault.com/img/bVV6Cm?w=470&h=164)
 
+## 全局引入less变量
+
+```js
+npm i style-resources-loader vue-cli-plugin-style-resources-loader -D
+```
+
+在vue.config.js中配置
+
+```javascript
+module.exports = {
+    ...,
+    pluginOptions: {
+      'style-resources-loader': {
+        preProcessor: 'less',
+        patterns: [path.resolve(__dirname, "./src/common/less/variable.less")] // 引入全局样式变量
+      }
+	}
+}
+```
+
