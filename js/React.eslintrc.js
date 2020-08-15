@@ -91,7 +91,9 @@ module.exports = {
     // 风格指南 //
     //////////////
     // 指定数组的元素之间要以空格隔开(, 后面)， never参数：[ 之前和 ] 之后不能带空格，always参数：[ 之前和 ] 之后必须带空格
-    "array-bracket-spacing": [2, "never"],
+    "array-bracket-spacing": [2, "always"],
+    // 对象前后必须有空格
+    "object-curly-spacing": [2, "always"],
     // 禁止或强制在单行代码块中使用空格(禁用)
     "block-spacing": [1, "never"],
     //强制使用一致的缩进 第二个参数为 "tab" 时，会使用tab，
@@ -109,7 +111,7 @@ module.exports = {
     "comma-style": [2, "last"],
     //"SwitchCase" (默认：0) 强制 switch 语句中的 case 子句的缩进水平
     // 以方括号取对象属性时，[ 后面和 ] 前面是否需要空格, 可选参数 never, always
-    "computed-property-spacing": [2, "never"],
+    "computed-property-spacing": [2, "always"],
     // 用于指统一在回调函数中指向this的变量名，箭头函数中的this已经可以指向外层调用者，应该没卵用了
     // e.g [0,"self"] 指定只能 var that = this. self不能指向其他任何值，this也不能赋值给self以外的其他值
     "consistent-this": [2, "self","that","_self","_that","me","_this"],
@@ -264,7 +266,7 @@ module.exports = {
     // 要求箭头函数体使用大括号
     "arrow-body-style": 2,
     // 要求箭头函数的参数使用圆括号
-    "arrow-parens": 2,
+    "arrow-parens": 0,
     "arrow-spacing": [2, {
       "before": true,
       "after": true
@@ -314,18 +316,15 @@ module.exports = {
     "template-curly-spacing": 1,
     // 强制在 yield* 表达式中 * 周围使用空格
     "yield-star-spacing": 2,
-
-
-
     // 强制使用一致的换行风格
-    "linebreak-style": [2, "unix"],
+    // "linebreak-style": [2, "unix"],
     //在JSX中强制布尔属性符号
     "react/jsx-boolean-value": 2,
     //在JSX中验证右括号位置
     // "react/jsx-closing-bracket-location": 1,
     //在JSX属性和表达式中加强或禁止大括号内的空格。
     "react/jsx-curly-spacing": [2, {
-      "when": "never",
+      "when": "always",
       "children": true
     }],
     //在数组或迭代器中验证JSX具有key属性
@@ -355,7 +354,7 @@ module.exports = {
     //为React组件强制执行ES5或ES6类
     "react/prefer-es6-class": 2,
     //防止在React组件定义中丢失props验证
-    // "react/prop-types": 1,
+    "react/prop-types": 0,
     //使用JSX时防止丢失React
     "react/react-in-jsx-scope": 2,
     //防止没有children的组件的额外结束标签
@@ -369,7 +368,7 @@ module.exports = {
     //在JSX属性中强制或禁止等号周围的空格
     "react/jsx-equals-spacing": 2,
     "react/jsx-filename-extension": [2, {
-      "extensions": [".js", ".jsx"]
+      "extensions": [".js", ".jsx", ".tsx"]
     }],
     // 禁止未使用的变量
     "no-unused-vars": 0,
